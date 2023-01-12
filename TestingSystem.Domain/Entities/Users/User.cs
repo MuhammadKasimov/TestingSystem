@@ -16,6 +16,7 @@ namespace TestingSystem.Domain.Entities.Users
         public string Password { get; set; }
         public string Username { get; set; }
         public string IpAddress { get; set; }
+        public string Degree { get; set; }
         public UserRole Role { get; set; }
     }
 }
