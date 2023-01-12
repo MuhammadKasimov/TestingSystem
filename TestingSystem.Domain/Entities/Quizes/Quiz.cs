@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TestingSystem.Domain.Commons;
-using TestingSystem.Domain.Entities.Questions;
 
 namespace TestingSystem.Domain.Entities.Quizes
 {
