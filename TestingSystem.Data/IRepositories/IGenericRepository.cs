@@ -14,5 +14,7 @@ namespace TestingSystem.Data.IRepositories
         IQueryable<T> GetAll(Expression<Func<T, bool>> expression,
             string[] includes = null,
             bool isTracking = true);
+
+        public ValueTask SaveChangesAsync();
     }
 }

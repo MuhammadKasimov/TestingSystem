@@ -58,5 +58,9 @@ namespace TestingSystem.Data.Repositories
 
         public T Update(T entity) =>
             dbSet.Update(entity).Entity;
+
+        public async ValueTask SaveChangesAsync() =>
+           await dbContext.SaveChangesAsync();
+
     }
 }
