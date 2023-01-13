@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -17,7 +18,11 @@ namespace TestingSystem.Domain.Entities.Quizes
         public int QuizId { get; set; }
         public Quiz Quiz { get; set; }
         public int AttachmentId { get; set; }
+       
+        [MaxLength (200)]
         public string Title { get; set; }
+        
+        [MaxLength(500)]
         public string Description { get; set; }
 
         public ICollection<Answer> Answers { get; set; }
