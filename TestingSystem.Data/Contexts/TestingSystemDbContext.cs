@@ -1,10 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestingSystem.Domain.Entities.Answers;
 using TestingSystem.Domain.Entities.Attachments;
 using TestingSystem.Domain.Entities.Courses;
 using TestingSystem.Domain.Entities.Quizes;
@@ -22,7 +16,7 @@ namespace TestingSystem.Data.Contexts
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Quiz> Quizzes { get; set; }
         public virtual DbSet<QuizResults> QuizResults { get; set; }
-        public virtual DbSet<Question>  Questions { get; set; }
+        public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<Attachment> Attachments { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }
 
