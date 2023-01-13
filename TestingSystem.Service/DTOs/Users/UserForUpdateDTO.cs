@@ -11,7 +11,7 @@ namespace TestingSystem.Service.DTOs.Users
         [Required]
         public string LastName { get; set; }
 
-        [Required]
+        [Required, EmailAddress]
         public string Email { get; set; }
 
         [UserLogin, Required]
