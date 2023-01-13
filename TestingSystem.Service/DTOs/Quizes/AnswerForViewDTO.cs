@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestingSystem.Domain.Commons;
-using TestingSystem.Domain.Entities.Quizes;
 
-namespace TestingSystem.Domain.Entities.Answers
+namespace TestingSystem.Service.DTOs.Quizes
 {
-    public class Answer : Auditable
+    public class AnswerForViewDTO
     {
         public string Content { get; set; }
         public string Option { get; set; }
         public bool IsCorrect { get; set; }
-
-        public Question Questions { get; set; }
+        public QuestionForViewDTO Question { get; set; }
     }
 }
