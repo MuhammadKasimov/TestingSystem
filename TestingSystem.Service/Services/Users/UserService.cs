@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -12,7 +13,7 @@ using TestingSystem.Service.DTOs.Users;
 using TestingSystem.Service.Exceptions;
 using TestingSystem.Service.Extensions;
 using TestingSystem.Service.Helpers;
-using TestingSystem.Service.Interfaces;
+using TestingSystem.Service.Interfaces.Users;
 
 namespace TestingSystem.Service.Services
 {
@@ -53,6 +54,14 @@ namespace TestingSystem.Service.Services
 
             return (await users.ToPagedList(@params).ToListAsync()).Adapt<List<UserForViewDTO>>();
         }
+
+        public async ValueTask<IEnumerable<UserForViewDTO>> GetAllByDegreeAndFullNameAsync(PaginationParams paginationParams, string degree, string fullName) => 
+            await GetAllAsync(paginationParams, u => (u.Degree == degree ||
+                          string.IsNullOrEmpty(degree)) &&
+                          (u.FirstName.Contains(fullName) ||
+                          u.LastName.Contains(fullName) ||
+                          "{u.FirstName} {u.LastName}".Contains(u.FirstName) 
+                          || string.IsNullOrEmpty(fullName)));
 
         public async ValueTask<UserForViewDTO> GetAsync(Expression<Func<User, bool>> expression)
         {

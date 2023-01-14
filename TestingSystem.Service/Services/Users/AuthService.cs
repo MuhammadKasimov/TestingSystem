@@ -10,7 +10,7 @@ using TestingSystem.Domain.Entities.Users;
 using TestingSystem.Service.Exceptions;
 using TestingSystem.Service.Extensions;
 using TestingSystem.Service.Helpers;
-using TestingSystem.Service.Interfaces;
+using TestingSystem.Service.Interfaces.Users;
 
 namespace StarBucks.Service.Services
 {
@@ -35,9 +35,17 @@ namespace StarBucks.Service.Services
             var correct = await userRepository.GetAsync(
                 u => u.IpAddress == HttpContextHelper.IpAddress || string.IsNullOrEmpty(u.IpAddress));
 
+            
+
             if (correct == null)
                 throw new TestingSystemException(400, "Another device is already logined");
 
+            if (string.IsNullOrEmpty(correct.IpAddress))
+            {
+                correct.IpAddress = HttpContextHelper.IpAddress;
+                userRepository.Update(correct);
+                await userRepository.SaveChangesAsync();
+            }
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
             byte[] tokenKey = Encoding.UTF8.GetBytes(configuration["JWT:Key"]);

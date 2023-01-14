@@ -8,7 +8,7 @@ using TestingSystem.Domain.Configurations;
 using TestingSystem.Domain.Entities.Courses;
 using TestingSystem.Service.DTOs.Courses;
 
-namespace TestingSystem.Service.Interfaces
+namespace TestingSystem.Service.Interfaces.Courses
 {
     public interface ICourseService
     {

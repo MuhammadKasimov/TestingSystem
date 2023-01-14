@@ -7,7 +7,7 @@ using TestingSystem.Domain.Entities.Users;
 using TestingSystem.Domain.Enums;
 using TestingSystem.Service.DTOs.Users;
 
-namespace TestingSystem.Service.Interfaces
+namespace TestingSystem.Service.Interfaces.Users
 {
     public interface IUserService
     {
@@ -21,7 +21,9 @@ namespace TestingSystem.Service.Interfaces
             PaginationParams @params,
             Expression<Func<User, bool>> expression = null);
 
-        ValueTask<UserForViewDTO> GetAsync(Expression<Func<User, bool>> expression);
+        ValueTask<IEnumerable<UserForViewDTO>> GetAllByDegreeAndFullNameAsync(PaginationParams paginationParams, string degree, string fullName);
+
+        ValueTask < UserForViewDTO> GetAsync(Expression<Func<User, bool>> expression);
 
         ValueTask<bool> ChangeRoleAsync(int id, UserRole userRole);
 

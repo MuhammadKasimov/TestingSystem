@@ -8,6 +8,7 @@ using TestingSystem.Domain.Configurations;
 using TestingSystem.Domain.Enums;
 using TestingSystem.Service.DTOs.Users;
 using TestingSystem.Service.Interfaces;
+using TestingSystem.Service.Interfaces.Users;
 
 namespace TestingSystem.Api.Controllers
 {
@@ -22,7 +23,7 @@ namespace TestingSystem.Api.Controllers
                 this.userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> CreateAsync(UserForCreationDTO userForCreationDTO)
         {
             return Ok(await userService.CreateAsync(userForCreationDTO));

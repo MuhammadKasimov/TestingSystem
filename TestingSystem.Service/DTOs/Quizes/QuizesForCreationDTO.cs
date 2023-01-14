@@ -2,12 +2,10 @@
 
 namespace TestingSystem.Service.DTOs.Quizes
 {
-    public class QuizesForCreationDTO
+    public class QuizForCreationDTO
     {
         [Required]
         public int CourseId { get; set; }
-        [Required]
-        public int NumberOfQuestion { get; set; }
         [Required]
         public string Title { get; set; }
     }

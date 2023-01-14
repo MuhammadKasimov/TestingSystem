@@ -33,6 +33,27 @@ namespace TestingSystem.Data.Contexts
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.IpAddress)
                 .IsUnique(true);
+
+            //modelBuilder.Entity<Course>()
+            //    .HasMany(c => c.Quizes)
+            //    .WithOne()
+            //    .OnDelete(DeleteBehavior.Cascade);
+            
+            //modelBuilder.Entity<Quiz>()
+            //    .HasMany(c => c.Questions)
+            //    .WithOne()
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<Question>()
+            //    .HasMany(c => c.Answers)
+            //    .WithOne()
+            //    .OnDelete(DeleteBehavior.Cascade);  
+            
+            //modelBuilder.Entity<Question>()
+            //    .HasMany(c => c.Attachments)
+            //    .WithOne()
+            //    .OnDelete(DeleteBehavior.Cascade);
+        
         }
     }
 }

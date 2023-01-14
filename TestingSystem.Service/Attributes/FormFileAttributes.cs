@@ -12,7 +12,7 @@ namespace TestingSystem.Service.Attributes
         {
             if (value is IFormFile file)
             {
-                string[] extensions = new string[] { ".png", ".jpg" };
+                string[] extensions = new string[] { ".png", ".jpg", ".mp3", ".mp4", ".mkv", ".pptx",".ppt",".doc",".docx"};
                 var extension = Path.GetExtension(file.FileName);
 
                 if (!extensions.Contains(extension.ToLower()))
