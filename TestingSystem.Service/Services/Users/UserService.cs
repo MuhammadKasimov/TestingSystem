@@ -30,7 +30,7 @@ namespace TestingSystem.Service.Services
             var alreadyExistUser = await userRepository.GetAsync(u => u.Username == userForCreationDTO.Username);
 
             if (alreadyExistUser != null)
-                throw new TestingSystemException(400, "User With Such Username Already Exist");
+                throw new TestingSystemException(400, "User with such username already exist");
 
             userForCreationDTO.Password = userForCreationDTO.Password.Encrypt();
 
@@ -49,7 +49,7 @@ namespace TestingSystem.Service.Services
 
         public async ValueTask<IEnumerable<UserForViewDTO>> GetAllAsync(PaginationParams @params, Expression<Func<User, bool>> expression = null)
         {
-            var users = userRepository.GetAll(expression: expression, isTracking: false, includes: new string[] { "Address" });
+            var users = userRepository.GetAll(expression: expression, isTracking: false);
 
             return (await users.ToPagedList(@params).ToListAsync()).Adapt<List<UserForViewDTO>>();
         }
