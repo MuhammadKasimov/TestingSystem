@@ -6,6 +6,7 @@ using TestingSystem.Api.Helpers;
 using TestingSystem.Domain.Configurations;
 using TestingSystem.Service.DTOs.Courses;
 using TestingSystem.Service.Interfaces;
+using TestingSystem.Service.Interfaces.Courses;
 
 namespace TestingSystem.Api.Controllers
 {
