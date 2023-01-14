@@ -7,8 +7,6 @@ namespace TestingSystem.Service.DTOs.Quizes
         [Required]
         public int CourseId { get; set; }
         [Required]
-        public int NumberOfQuestion { get; set; }
-        [Required]
         public string Title { get; set; }
     }
 }

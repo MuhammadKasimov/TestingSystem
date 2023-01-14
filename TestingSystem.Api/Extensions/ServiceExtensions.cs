@@ -9,7 +9,7 @@ using System.Text;
 using TestingSystem.Data.IRepositories;
 using TestingSystem.Data.Repositories;
 using TestingSystem.Domain.Entities.Users;
-using TestingSystem.Service.Interfaces;
+using TestingSystem.Service.Interfaces.Users;
 
 namespace StarBucks.Api.Extensions
 {

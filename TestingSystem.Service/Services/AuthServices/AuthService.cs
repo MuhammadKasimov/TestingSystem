@@ -10,7 +10,7 @@ using TestingSystem.Domain.Entities.Users;
 using TestingSystem.Service.Exceptions;
 using TestingSystem.Service.Extensions;
 using TestingSystem.Service.Helpers;
-using TestingSystem.Service.Interfaces;
+using TestingSystem.Service.Interfaces.Users;
 
 namespace StarBucks.Service.Services
 {
