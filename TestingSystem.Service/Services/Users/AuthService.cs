@@ -27,7 +27,7 @@ namespace StarBucks.Service.Services
         public async ValueTask<string> GenerateToken(string username, string password)
         {
             User user = await userRepository.GetAsync(u =>
-                u.Username == username && u.Password.Equals(password));
+                u.Username == username && u.Password.Equals(password.Encrypt()));
 
             if (user is null)
                 throw new TestingSystemException(400, "Login or Password is incorrect");

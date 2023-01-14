@@ -48,7 +48,7 @@ namespace TestingSystem.Service.Services.Quizes
             var isDeleted = await quizRepository.DeleteAsync(q => q.Id == id);
 
             if (!isDeleted)
-                throw new TestingSystemException(404, "Course not found");
+                throw new TestingSystemException(404, "Quiz not found");
             await quizRepository.SaveChangesAsync();
             return true;
         }
@@ -63,13 +63,28 @@ namespace TestingSystem.Service.Services.Quizes
         {
             var quiz = await quizRepository.GetAsync(expression, new string[] { "Questions" });
             if (quiz is null)
-                throw new TestingSystemException(404, "Course not found");
+                throw new TestingSystemException(404, "Quiz not found");
             return quiz.Adapt<QuizForViewDTO>();
         }
 
-        public ValueTask<QuizForViewDTO> UpdateAsync(int id, QuizForCreationDTO QuizForCreationDTO)
+        public async  ValueTask<QuizForViewDTO> UpdateAsync(int id, QuizForCreationDTO quizForCreationDTO)
         {
-            throw new NotImplementedException();
+            var existQuiz = await quizRepository.GetAsync(c => c.Id == id);
+            if (existQuiz is null)
+                throw new TestingSystemException(404, "Quiz not found");
+
+            var course = await courseRepository.GetAsync(c => c.Id == quizForCreationDTO.CourseId);
+
+            if (course is null)
+                throw new TestingSystemException(404, "Course not found");
+
+            var quiz = existQuiz.Adapt<Quiz>();
+
+            quiz.UpdatedAt = DateTime.UtcNow;
+            quiz = quizRepository.Update(quizForCreationDTO.Adapt(quiz));
+            await quizRepository.SaveChangesAsync();
+
+            return quiz.Adapt<QuizForViewDTO>();
         }
     }
 }

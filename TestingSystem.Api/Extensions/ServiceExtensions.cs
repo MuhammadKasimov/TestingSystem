@@ -10,6 +10,7 @@ using TestingSystem.Data.IRepositories;
 using TestingSystem.Data.Repositories;
 using TestingSystem.Domain.Entities.Users;
 using TestingSystem.Service.Interfaces.Users;
+using TestingSystem.Service.Services;
 
 namespace StarBucks.Api.Extensions
 {
@@ -23,9 +24,7 @@ namespace StarBucks.Api.Extensions
             // services
 
             services.AddScoped<IAuthService, AuthService>();
-
-
-
+            services.AddScoped<IUserService, UserService>();
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
