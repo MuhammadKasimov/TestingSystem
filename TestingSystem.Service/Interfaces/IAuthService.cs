@@ -6,8 +6,5 @@ namespace TestingSystem.Service.Interfaces
     public interface IAuthService
     {
         ValueTask<string> GenerateToken(string username, string password);
-        ValueTask<UserForViewDTO> CreateAsync(UserForCreationDTO userForCreationDTO);
-
-
     }
 }
