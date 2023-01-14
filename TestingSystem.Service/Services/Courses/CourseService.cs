@@ -52,13 +52,13 @@ namespace TestingSystem.Service.Services.CourseServices
 
         public async ValueTask<IEnumerable<CourseForViewDTO>> GetAllAsync(PaginationParams @params, Expression<Func<Course, bool>> expression = null)
         {
-            var courses = courseRepository.GetAll(expression: expression, isTracking: false);
+            var courses = courseRepository.GetAll(expression: expression, isTracking: false, includes: new string[] { "Quizes"});
             return (await courses.ToPagedList(@params).ToListAsync()).Adapt<List<CourseForViewDTO>>();
         }
 
         public async ValueTask<CourseForViewDTO> GetAsync(Expression<Func<Course, bool>> expression)
         {
-            var course = await courseRepository.GetAsync(expression);
+            var course = await courseRepository.GetAsync(expression, includes: new string[] { "Quizes" });
             if (course is null)
                 throw new TestingSystemException(404, "Course not found");
             return course.Adapt<CourseForViewDTO>();
