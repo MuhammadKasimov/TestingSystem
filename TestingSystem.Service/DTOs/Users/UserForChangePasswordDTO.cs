@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TestingSystem.Service.Attributes;
 
 namespace TestingSystem.Service.DTOs.Users
 {
@@ -6,7 +7,7 @@ namespace TestingSystem.Service.DTOs.Users
     {
         [Required]
         public string OldPassword { get; set; }
-        [Required]
+        [Required, UserPassword]
         public string NewPassword { get; set; }
     }
 }
