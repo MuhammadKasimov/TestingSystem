@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TestingSystem.Service.DTOs.Users;
-using TestingSystem.Service.Interfaces;
+using TestingSystem.Service.Interfaces.Users;
 
 namespace TestingSystem.Api.Controllers
 {

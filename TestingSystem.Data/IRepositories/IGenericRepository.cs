@@ -17,6 +17,5 @@ namespace TestingSystem.Data.IRepositories
             bool isTracking = true);
 
         public ValueTask SaveChangesAsync();
-        object GetAll(Expression<Func<Course, bool>> expression, bool isTracking, object includes, char v);
-    }
+        }
 }

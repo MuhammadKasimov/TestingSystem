@@ -9,7 +9,7 @@ namespace TestingSystem.Service.Helpers
         public static HttpContext HttpContext => Accessor?.HttpContext;
         public static IHeaderDictionary ResponseHeaders => HttpContext?.Response?.Headers;
         public static int? UserId => GetUserId();
-        public static string IpAddress => Accessor?.HttpContext.Connection.RemoteIpAddress.MapToIPv6().ToString();
+        public static string IpAddress => Accessor?.HttpContext.Connection.RemoteIpAddress.ToString();
         public static string UserRole => HttpContext?.User.FindFirst("Role")?.Value;
 
         private static int? GetUserId()
