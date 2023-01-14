@@ -2,7 +2,7 @@
 
 namespace TestingSystem.Service.DTOs.Courses
 {
-    public class CouseForCreationDTO
+    public class CourseForCreationDTO
     {
         [Required]
         public string Name { get; set; }
