@@ -28,7 +28,7 @@ namespace TestingSystem.Api.Controllers
             return Ok(await userService.CreateAsync(userForCreationDTO));
         }
 
-        [HttpPut, Authorize(Roles = CustomRoles.USER_ROLE)]
+        [HttpPut, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> UpdateAsync(int id, UserForUpdateDTO userForUpdateDTO)
             => Ok(await userService.UpdateAsync(id, userForUpdateDTO));
         
@@ -49,5 +49,8 @@ namespace TestingSystem.Api.Controllers
         public async ValueTask<IActionResult> GetAsync([FromRoute] int id)
            => Ok(await userService.GetAsync(u => u.Id == id));
 
+        [HttpDelete, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+            => Ok(await userService.DeleteAsync(id));
     }
 }
