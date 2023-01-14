@@ -8,9 +8,13 @@ using System.Linq;
 using System.Text;
 using TestingSystem.Data.IRepositories;
 using TestingSystem.Data.Repositories;
+using TestingSystem.Domain.Entities.Courses;
 using TestingSystem.Domain.Entities.Users;
-using TestingSystem.Service.Interfaces.Users;
+using TestingSystem.Service.Interfaces;
 using TestingSystem.Service.Services;
+using TestingSystem.Service.Services.CourseServices;
+using TestingSystem.Service.Interfaces.Users;
+using TestingSystem.Service.Interfaces.Courses;
 
 namespace StarBucks.Api.Extensions
 {
@@ -20,13 +24,16 @@ namespace StarBucks.Api.Extensions
         {
             // unit if work
             services.AddScoped<IGenericRepository<User>, GenericRepository<User>>();
+            services.AddScoped<IGenericRepository<Course>, GenericRepository<Course>>(); 
 
             // services
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICourseService, CourseService>();
+            
         }
-
+            
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("Jwt");

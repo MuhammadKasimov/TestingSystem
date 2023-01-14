@@ -50,5 +50,8 @@ namespace TestingSystem.Api.Controllers
         public async ValueTask<IActionResult> GetAsync([FromRoute] int id)
            => Ok(await userService.GetAsync(u => u.Id == id));
 
+        [HttpDelete, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+            => Ok(await userService.DeleteAsync(id));
     }
 }

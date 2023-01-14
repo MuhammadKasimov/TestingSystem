@@ -17,5 +17,5 @@ namespace TestingSystem.Data.IRepositories
             bool isTracking = true);
 
         public ValueTask SaveChangesAsync();
-        }
+    }
 }
