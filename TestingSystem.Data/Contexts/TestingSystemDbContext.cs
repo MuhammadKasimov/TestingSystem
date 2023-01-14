@@ -31,7 +31,7 @@ namespace TestingSystem.Data.Contexts
                 .IsUnique(true);
 
             modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email)
+                .HasIndex(u => u.IpAddress)
                 .IsUnique(true);
         }
     }

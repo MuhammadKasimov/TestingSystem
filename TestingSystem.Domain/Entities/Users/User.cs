@@ -12,15 +12,14 @@ namespace TestingSystem.Domain.Entities.Users
         [MaxLength(32)]
         public string LastName { get; set; }
 
-        [MaxLength(64)]
-        public string Email { get; set; }
-
         [MaxLength(128)]
         public string Password { get; set; }
 
         [MaxLength(64)]
         public string Username { get; set; }
         public string IpAddress { get; set; }
+
+        [MaxLength(2)]
         public string Degree { get; set; }
         public UserRole Role { get; set; }
     }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TestingSystem.Service.DTOs.Users;
 using TestingSystem.Service.Interfaces;
@@ -29,12 +28,6 @@ namespace TestingSystem.Api.Controllers
             {
                 token
             });
-        }
-
-        [HttpPost("register")]
-        public async ValueTask<IActionResult> RegisterAsync(UserForCreationDTO userForCreationDTO)
-        {
-            return Ok(await authService.CreateAsync(userForCreationDTO));
         }
     }
 }

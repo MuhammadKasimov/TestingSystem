@@ -1,6 +1,4 @@
-﻿using Mapster;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TestingSystem.Data.IRepositories;
 using TestingSystem.Domain.Entities.Users;
-using TestingSystem.Service.DTOs.Users;
 using TestingSystem.Service.Exceptions;
 using TestingSystem.Service.Extensions;
 using TestingSystem.Service.Helpers;
@@ -34,9 +31,9 @@ namespace StarBucks.Service.Services
 
             if (user is null)
                 throw new TestingSystemException(400, "Login or Password is incorrect");
-            
+
             var correct = await userRepository.GetAsync(
-                u => u.IpAddress == HttpContextHelper.IpAddress && u.Username == username);
+                u => u.IpAddress == HttpContextHelper.IpAddress || string.IsNullOrEmpty(u.IpAddress));
 
             if (correct == null)
                 throw new TestingSystemException(400, "Another device is already logined");
@@ -59,25 +56,6 @@ namespace StarBucks.Service.Services
             var token = tokenHandler.CreateToken(tokenDescription);
 
             return tokenHandler.WriteToken(token);
-        }
-
-        public async ValueTask<UserForViewDTO> CreateAsync(UserForCreationDTO userForCreationDTO)
-        {
-            var alreadyExistUser = await userRepository.GetAsync(u => u.Username == userForCreationDTO.Username && u.Email == userForCreationDTO.Email);
-
-            if (alreadyExistUser != null)
-                throw new TestingSystemException(400, "User with such username or email already exist");
-
-            var alreadyLoginedDevice = await userRepository.GetAsync(u => u.IpAddress == HttpContextHelper.IpAddress);
-
-            if (alreadyLoginedDevice != null)
-                throw new TestingSystemException(400, "This device is alredy signed");
-            userForCreationDTO.Password = userForCreationDTO.Password.Encrypt();
-
-            var user = await userRepository.CreateAsync(userForCreationDTO.Adapt<User>());
-            user.IpAddress = HttpContextHelper.IpAddress;
-            await userRepository.SaveChangesAsync();
-            return user.Adapt<UserForViewDTO>();
         }
     }
 }
