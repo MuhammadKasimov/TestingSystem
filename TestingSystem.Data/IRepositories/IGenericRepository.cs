@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using TestingSystem.Domain.Entities.Courses;
 
 namespace TestingSystem.Data.IRepositories
 {
@@ -16,5 +17,6 @@ namespace TestingSystem.Data.IRepositories
             bool isTracking = true);
 
         public ValueTask SaveChangesAsync();
+        object GetAll(Expression<Func<Course, bool>> expression, bool isTracking, object includes, char v);
     }
 }
