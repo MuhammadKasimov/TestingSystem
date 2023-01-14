@@ -12,7 +12,7 @@ using TestingSystem.Domain.Entities.Courses;
 using TestingSystem.Service.DTOs.Courses;
 using TestingSystem.Service.Exceptions;
 using TestingSystem.Service.Extensions;
-using TestingSystem.Service.Interfaces;
+using TestingSystem.Service.Interfaces.Courses;
 
 namespace TestingSystem.Service.Services.CourseServices
 {
@@ -45,6 +45,8 @@ namespace TestingSystem.Service.Services.CourseServices
             
             if(!isDeleted)
                 throw new TestingSystemException(404, "Course not found");
+
+            await courseRepository.SaveChangesAsync();
             return true;
         }
 

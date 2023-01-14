@@ -20,4 +20,10 @@
     <ProjectReference Include="..\TestingSystem.Service\TestingSystem.Service.csproj" />
   </ItemGroup>
 
+
+   <PropertyGroup>
+	 <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	 <NoWarn>1591</NoWarn>
+   </PropertyGroup>
+
 </Project>

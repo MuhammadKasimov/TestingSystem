@@ -23,6 +23,9 @@ namespace StarBucks.Api.Extensions
             // services
 
             services.AddScoped<IAuthService, AuthService>();
+
+
+
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
