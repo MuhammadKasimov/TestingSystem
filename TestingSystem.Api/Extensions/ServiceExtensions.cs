@@ -18,6 +18,7 @@ using TestingSystem.Service.Interfaces.Courses;
 using TestingSystem.Service.Interfaces.Quizes;
 using TestingSystem.Service.Services.Quizes;
 using TestingSystem.Domain.Entities.Quizes;
+using TestingSystem.Service.Interfaces.Questiones;
 
 namespace StarBucks.Api.Extensions
 {
@@ -29,12 +30,14 @@ namespace StarBucks.Api.Extensions
             services.AddScoped<IGenericRepository<User>, GenericRepository<User>>();
             services.AddScoped<IGenericRepository<Course>, GenericRepository<Course>>();
             services.AddScoped<IGenericRepository<Quiz>, GenericRepository<Quiz>>();
+            services.AddScoped<IGenericRepository<Question>, GenericRepository<Question>>();
             // services
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IQuizService, QuizService>();
+            services.AddScoped<IQuestionService, QuestionService>();
             
         }
             

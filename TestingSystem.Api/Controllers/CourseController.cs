@@ -38,7 +38,7 @@ namespace TestingSystem.Api.Controllers
         /// <param name="id"></param>
         /// <param name="courseForCreationDTO"></param>
         /// <returns></returns>
-        [HttpPut, Authorize(Roles = CustomRoles.USER_ROLE)]
+        [HttpPut, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> UpdateAsync(int id, CourseForCreationDTO courseForCreationDTO)
            => Ok(await courseService.UpdateAsync(id, courseForCreationDTO));
 
