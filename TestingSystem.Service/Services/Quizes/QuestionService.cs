@@ -22,6 +22,11 @@ namespace TestingSystem.Service.Services.Quizes
         private readonly IGenericRepository<Quiz> quizRepository;
         private readonly IGenericRepository<Question> questionRepository;
 
+        public QuestionService(IGenericRepository<Quiz> quizRepository, IGenericRepository<Question> questionRepository)
+        {
+            this.quizRepository = quizRepository;
+            this.questionRepository = questionRepository;
+        }
 
         public async ValueTask<QuestionForViewDTO> CreateAsync(QuestionForCreationDTO questionForCreationDTO)
         {
