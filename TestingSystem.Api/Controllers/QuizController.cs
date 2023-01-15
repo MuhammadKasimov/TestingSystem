@@ -22,9 +22,7 @@ namespace TestingSystem.Api.Controllers
 
         [HttpPost, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> CreateAsync(QuizForCreationDTO quizForCreationDTO)
-        {
-            return Ok(await quizService.CreateAsync(quizForCreationDTO));
-        }
+            => Ok(await quizService.CreateAsync(quizForCreationDTO));
 
         [HttpPut, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> UpdateAsync(int id, QuizForCreationDTO quizForUpdateDTO)

@@ -28,9 +28,8 @@ namespace TestingSystem.Api.Controllers
         /// <returns></returns>
         [HttpPost, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> CreateAsync(CourseForCreationDTO courseForCreationDTO)
-        {
-            return Ok(await courseService.CreateAsync(courseForCreationDTO));
-        }
+            => Ok(await courseService.CreateAsync(courseForCreationDTO));
+
 
         /// <summary>
         /// Update course by {Admin}
