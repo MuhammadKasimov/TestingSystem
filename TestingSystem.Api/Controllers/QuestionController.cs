@@ -19,22 +19,48 @@ namespace TestingSystem.Api.Controllers
             this.questionService = questionService;
         }
 
+        /// <summary>
+        /// Create new question {Admin)
+        /// </summary>
+        /// <param name="questionForCreationDTO"></param>
+        /// <returns></returns>
         [HttpPost, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> CreateAsync(QuestionForCreationDTO questionForCreationDTO)
             => Ok(await questionService.CreateAsync(questionForCreationDTO));
 
+        /// <summary>
+        /// Update a question {Admin}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="questionForCreationDTO"></param>
+        /// <returns></returns>
         [HttpPut, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> UpdateAsync(int id, QuestionForCreationDTO questionForCreationDTO)
           => Ok(await questionService.UpdateAsync(id, questionForCreationDTO));
 
+        /// <summary>
+        /// Get all questions {Everyone}
+        /// </summary>
+        /// <param name="params"></param>
+        /// <returns></returns>
         [HttpGet, Authorize(Roles = CustomRoles.ALL_ROLES)]
         public async ValueTask<IActionResult> GetAll([FromQuery] PaginationParams @params)
            => Ok(await questionService.GetAllAsync(@params));
 
+        /// <summary>
+        /// Get a question {Everyone}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}/Admin"), Authorize(Roles = CustomRoles.ALL_ROLES)]
         public async ValueTask<IActionResult> GetAsync([FromRoute] int id)
            => Ok(await questionService.GetAsync(u => u.Id == id));
 
+        /// <summary>
+        /// Delete a question {Admin}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
             => Ok(await questionService.DeleteAsync(id));
