@@ -8,7 +8,5 @@ namespace TestingSystem.Service.DTOs.Quizes
         public int CorrectAnswers { get; set; }
         [Required]
         public int QuizId { get; set; }
-        [Required]
-        public int UserId { get; set; }
     }
 }
