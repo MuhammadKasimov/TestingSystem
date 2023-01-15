@@ -78,13 +78,12 @@ namespace TestingSystem.Service.Services.Quizes
             if (course is null)
                 throw new TestingSystemException(404, "Course not found");
 
-            var quiz = existQuiz.Adapt<Quiz>();
-
-            quiz.UpdatedAt = DateTime.UtcNow;
-            quiz = quizRepository.Update(quizForCreationDTO.Adapt(quiz));
+            
+            existQuiz.UpdatedAt = DateTime.UtcNow;
+            existQuiz = quizRepository.Update(quizForCreationDTO.Adapt(existQuiz));
             await quizRepository.SaveChangesAsync();
 
-            return quiz.Adapt<QuizForViewDTO>();
+            return existQuiz.Adapt<QuizForViewDTO>();
         }
     }
 }

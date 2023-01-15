@@ -30,10 +30,6 @@ namespace TestingSystem.Data.Contexts
                 .HasIndex(u => u.Username)
                 .IsUnique(true);
 
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.IpAddress)
-                .IsUnique(true);
-
             //modelBuilder.Entity<Course>()
             //    .HasMany(c => c.Quizes)
             //    .WithOne()
