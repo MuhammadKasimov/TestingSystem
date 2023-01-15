@@ -32,6 +32,7 @@ namespace StarBucks.Api.Extensions
             services.AddScoped<IGenericRepository<Quiz>, GenericRepository<Quiz>>();
             services.AddScoped<IGenericRepository<Question>, GenericRepository<Question>>();
             services.AddScoped<IGenericRepository<Answer>, GenericRepository<Answer>>();
+            services.AddScoped<IGenericRepository<QuizResult>, GenericRepository<QuizResult>>();
             // services
 
             services.AddScoped<IAuthService, AuthService>();
@@ -40,6 +41,7 @@ namespace StarBucks.Api.Extensions
             services.AddScoped<IQuizService, QuizService>();
             services.AddScoped<IQuestionService, QuestionService>();
             services.AddScoped<IAnswerService, AnswerService>();
+            services.AddScoped<IQuizResultService, QuizResultService>();
             
         }
             
