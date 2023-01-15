@@ -33,7 +33,7 @@ namespace StarBucks.Service.Services
                 throw new TestingSystemException(400, "Login or Password is incorrect");
 
             var correct = await userRepository.GetAsync(
-                u => u.IpAddress == HttpContextHelper.IpAddress || string.IsNullOrEmpty(u.IpAddress));
+                u => (u.IpAddress == HttpContextHelper.IpAddress && u.Username == username) || (string.IsNullOrEmpty(u.IpAddress) && u.Username == username));
 
             
 

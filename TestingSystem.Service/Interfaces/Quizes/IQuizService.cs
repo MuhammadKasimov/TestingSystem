@@ -12,9 +12,9 @@ namespace TestingSystem.Service.Interfaces.Quizes
 {
     public interface IQuizService 
     {
-        ValueTask<QuizForViewDTO> CreateAsync(QuizForCreationDTO QuizForCreationDTO);
+        ValueTask<QuizForViewDTO> CreateAsync(QuizForCreationDTO quizForCreationDTO);
 
-        ValueTask<QuizForViewDTO> UpdateAsync(int id, QuizForCreationDTO QuizForCreationDTO);
+        ValueTask<QuizForViewDTO> UpdateAsync(int id, QuizForCreationDTO quizForCreationDTO);
 
         ValueTask<bool> DeleteAsync(int id);
 
