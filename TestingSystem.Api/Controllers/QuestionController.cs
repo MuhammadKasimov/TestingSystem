@@ -21,9 +21,7 @@ namespace TestingSystem.Api.Controllers
 
         [HttpPost, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> CreateAsync(QuestionForCreationDTO questionForCreationDTO)
-        {
-            return Ok(await questionService.CreateAsync(questionForCreationDTO));
-        }
+            => Ok(await questionService.CreateAsync(questionForCreationDTO));
 
         [HttpPut, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> UpdateAsync(int id, QuestionForCreationDTO questionForCreationDTO)
