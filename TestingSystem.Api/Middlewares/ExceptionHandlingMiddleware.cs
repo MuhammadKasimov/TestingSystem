@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using System;
+using System.Threading.Tasks;
 using TestingSystem.Service.Exceptions;
 
 namespace TestingSystem.Api.Middlewares

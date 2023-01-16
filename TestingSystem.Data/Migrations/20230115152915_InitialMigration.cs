@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using System;
 
 #nullable disable
 
@@ -202,12 +202,6 @@ namespace TestingSystem.Data.Migrations
                 name: "IX_Quizzes_CourseId",
                 table: "Quizzes",
                 column: "CourseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_IpAddress",
-                table: "Users",
-                column: "IpAddress",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Username",

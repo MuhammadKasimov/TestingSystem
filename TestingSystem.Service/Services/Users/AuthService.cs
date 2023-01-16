@@ -35,7 +35,7 @@ namespace StarBucks.Service.Services
             var correct = await userRepository.GetAsync(
                 u => (u.IpAddress == HttpContextHelper.IpAddress && u.Username == username) || (string.IsNullOrEmpty(u.IpAddress) && u.Username == username));
 
-            
+
 
             if (correct == null)
                 throw new TestingSystemException(400, "Another device is already logined");

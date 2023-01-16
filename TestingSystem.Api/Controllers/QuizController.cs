@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TestingSystem.Api.Helpers;
@@ -35,7 +34,7 @@ namespace TestingSystem.Api.Controllers
         /// <param name="id"></param>
         /// <param name="quizForUpdateDTO"></param>
         /// <returns></returns>
-        [HttpPut, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+        [HttpPut("{id}"), Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> UpdateAsync(int id, QuizForCreationDTO quizForUpdateDTO)
             => Ok(await quizService.UpdateAsync(id, quizForUpdateDTO));
 
@@ -53,16 +52,18 @@ namespace TestingSystem.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}/Admin"), Authorize(Roles = CustomRoles.ALL_ROLES)]
+        [HttpGet("{id}"), Authorize(Roles = CustomRoles.ALL_ROLES)]
         public async ValueTask<IActionResult> GetAsync([FromRoute] int id)
            => Ok(await quizService.GetAsync(u => u.Id == id));
+
+
 
         /// <summary>
         /// Delete a quiz {Admin}
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+        [HttpDelete("{id}"), Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
             => Ok(await quizService.DeleteAsync(id));
     }

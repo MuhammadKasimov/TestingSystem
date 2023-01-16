@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TestingSystem.Api.Helpers;
@@ -28,14 +27,8 @@ namespace TestingSystem.Api.Controllers
         public async ValueTask<IActionResult> CreateAsync(QuestionForCreationDTO questionForCreationDTO)
             => Ok(await questionService.CreateAsync(questionForCreationDTO));
 
-        /// <summary>
-        /// Update a question {Admin}
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="questionForCreationDTO"></param>
-        /// <returns></returns>
-        [HttpPut, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
-        public async ValueTask<IActionResult> UpdateAsync(int id, QuestionForCreationDTO questionForCreationDTO)
+        [HttpPut("{id}"), Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+        public async ValueTask<IActionResult> UpdateAsync([FromRoute] int id, QuestionForCreationDTO questionForCreationDTO)
           => Ok(await questionService.UpdateAsync(id, questionForCreationDTO));
 
         /// <summary>
@@ -47,21 +40,23 @@ namespace TestingSystem.Api.Controllers
         public async ValueTask<IActionResult> GetAll([FromQuery] PaginationParams @params)
            => Ok(await questionService.GetAllAsync(@params));
 
+     
         /// <summary>
         /// Get a question {Everyone}
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}/Admin"), Authorize(Roles = CustomRoles.ALL_ROLES)]
+        [HttpGet("{id}"), Authorize(Roles = CustomRoles.ALL_ROLES)]
         public async ValueTask<IActionResult> GetAsync([FromRoute] int id)
            => Ok(await questionService.GetAsync(u => u.Id == id));
+
 
         /// <summary>
         /// Delete a question {Admin}
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+        [HttpDelete("{id}"), Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
             => Ok(await questionService.DeleteAsync(id));
     }

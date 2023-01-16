@@ -34,7 +34,7 @@ namespace TestingSystem.Data.Contexts
             //    .HasMany(c => c.Quizes)
             //    .WithOne()
             //    .OnDelete(DeleteBehavior.Cascade);
-            
+
             //modelBuilder.Entity<Quiz>()
             //    .HasMany(c => c.Questions)
             //    .WithOne()
@@ -44,12 +44,12 @@ namespace TestingSystem.Data.Contexts
             //    .HasMany(c => c.Answers)
             //    .WithOne()
             //    .OnDelete(DeleteBehavior.Cascade);  
-            
+
             //modelBuilder.Entity<Question>()
             //    .HasMany(c => c.Attachments)
             //    .WithOne()
             //    .OnDelete(DeleteBehavior.Cascade);
-        
+
         }
     }
 }

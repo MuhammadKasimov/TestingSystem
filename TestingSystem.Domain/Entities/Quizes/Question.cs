@@ -8,7 +8,6 @@ namespace TestingSystem.Domain.Entities.Quizes
     public class Question : Auditable
     {
         public int QuizId { get; set; }
-        public Quiz Quiz { get; set; }
 
         [MaxLength(200)]
         public string Title { get; set; }

@@ -1,10 +1,8 @@
-﻿using Mapster;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using TestingSystem.Data.IRepositories;
 using TestingSystem.Domain.Configurations;
@@ -20,11 +18,12 @@ namespace TestingSystem.Service.Services.Quizes
     {
         private readonly IGenericRepository<Answer> answerRepository;
         private readonly IGenericRepository<Question> questionRepository;
-
-        public AnswerService(IGenericRepository<Answer> answerRepository, IGenericRepository<Question> questionRepository)
+        private readonly IMapper mapper;
+        public AnswerService(IGenericRepository<Answer> answerRepository, IGenericRepository<Question> questionRepository, IMapper mapper)
         {
             this.answerRepository = answerRepository;
             this.questionRepository = questionRepository;
+            this.mapper = mapper;
         }
 
         public async ValueTask<AnswerForViewDTO> CreateAsync(AnswerForCreationDTO answerForCreationDTO)
@@ -36,9 +35,9 @@ namespace TestingSystem.Service.Services.Quizes
                 throw new TestingSystemException(404, "Question not found");
             }
 
-            var answer = await answerRepository.CreateAsync(answerForCreationDTO.Adapt<Answer>());
+            var answer = await answerRepository.CreateAsync(mapper.Map<Answer>(answerForCreationDTO));
             await answerRepository.SaveChangesAsync();
-            return answer.Adapt<AnswerForViewDTO>();
+            return mapper.Map<AnswerForViewDTO>(answer);
         }
 
         public async ValueTask<bool> DeleteAsync(int id)
@@ -53,17 +52,17 @@ namespace TestingSystem.Service.Services.Quizes
 
         public async ValueTask<IEnumerable<AnswerForViewDTO>> GetAllAsync(PaginationParams @params, Expression<Func<Answer, bool>> expression = null)
         {
-            var answers = answerRepository.GetAll(expression: expression, isTracking: false, includes: new string[] { "Question" });
-            return (await answers.ToPagedList(@params).ToListAsync()).Adapt<List<AnswerForViewDTO>>();
+            var answers = answerRepository.GetAll(expression: expression, isTracking: false);
+            return mapper.Map<List<AnswerForViewDTO>>(await answers.ToPagedList(@params).ToListAsync());
         }
 
         public async ValueTask<AnswerForViewDTO> GetAsync(Expression<Func<Answer, bool>> expression)
         {
-            var answer = await answerRepository.GetAsync(expression, new string[] { "Question" });
+            var answer = await answerRepository.GetAsync(expression);
             if (answer is null)
                 throw new TestingSystemException(404, "Answer Not Found");
 
-            return answer.Adapt<AnswerForViewDTO>();
+            return mapper.Map<AnswerForViewDTO>(answer);
         }
 
         public async ValueTask<AnswerForViewDTO> UpdateAsync(int id, AnswerForCreationDTO answerForCreationDTO)
@@ -77,10 +76,10 @@ namespace TestingSystem.Service.Services.Quizes
                 throw new TestingSystemException(404, "Question not found");
 
             existAnswer.UpdatedAt = DateTime.UtcNow;
-            existAnswer = answerRepository.Update(answerForCreationDTO.Adapt(existAnswer));
+            existAnswer = answerRepository.Update(mapper.Map(answerForCreationDTO, existAnswer));
             await answerRepository.SaveChangesAsync();
 
-            return existAnswer.Adapt<AnswerForViewDTO>();
+            return mapper.Map<AnswerForViewDTO>(existAnswer);
         }
     }
 }

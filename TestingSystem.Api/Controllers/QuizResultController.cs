@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TestingSystem.Api.Helpers;
@@ -19,12 +18,8 @@ namespace TestingSystem.Api.Controllers
             this.quizResultService = quizResultService;
         }
 
-        /// <summary>
-        /// Create new quiz result {Admin}
-        /// </summary>
-        /// <param name="courseForCreationDTO"></param>
-        /// <returns></returns>
-        [HttpPost, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+
+        [HttpPost, Authorize(Roles = CustomRoles.USER_ROLE)]
         public async ValueTask<IActionResult> CreateAsync(QuizResultForCreationDTO courseForCreationDTO)
             => Ok(await quizResultService.CreateAsync(courseForCreationDTO));
 
@@ -33,7 +28,7 @@ namespace TestingSystem.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}/Admin"), Authorize(Roles = CustomRoles.ALL_ROLES)]
+        [HttpGet("{id}"), Authorize(Roles = CustomRoles.ALL_ROLES)]
         public async ValueTask<IActionResult> GetAsync([FromRoute] int id)
             => Ok(await quizResultService.GetAsync(u => u.Id == id));
 
@@ -45,5 +40,9 @@ namespace TestingSystem.Api.Controllers
         [HttpGet, Authorize(Roles = CustomRoles.ALL_ROLES)]
         public async ValueTask<IActionResult> GetAll([FromQuery] PaginationParams @params)
            => Ok(await quizResultService.GetAllAsync(@params));
+
+        [HttpGet("{quizId}/Excel"), Authorize(Roles = CustomRoles.TEACHER_ROLE)]
+        public async ValueTask<IActionResult> GetAllInExcel([FromRoute] int quizId)
+            => Ok(await quizResultService.GetAllInExcel(quizId));
     }
 }

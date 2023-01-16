@@ -9,16 +9,16 @@ using System.Text;
 using TestingSystem.Data.IRepositories;
 using TestingSystem.Data.Repositories;
 using TestingSystem.Domain.Entities.Courses;
+using TestingSystem.Domain.Entities.Quizes;
 using TestingSystem.Domain.Entities.Users;
-using TestingSystem.Service.Interfaces;
+using TestingSystem.Service.Interfaces.Courses;
+using TestingSystem.Service.Interfaces.Questiones;
+using TestingSystem.Service.Interfaces.Quizes;
+using TestingSystem.Service.Interfaces.Users;
+using TestingSystem.Service.Mappers;
 using TestingSystem.Service.Services;
 using TestingSystem.Service.Services.CourseServices;
-using TestingSystem.Service.Interfaces.Users;
-using TestingSystem.Service.Interfaces.Courses;
-using TestingSystem.Service.Interfaces.Quizes;
 using TestingSystem.Service.Services.Quizes;
-using TestingSystem.Domain.Entities.Quizes;
-using TestingSystem.Service.Interfaces.Questiones;
 
 namespace StarBucks.Api.Extensions
 {
@@ -26,7 +26,11 @@ namespace StarBucks.Api.Extensions
     {
         public static void AddCustomServices(this IServiceCollection services)
         {
-            // unit if work
+            // mapper
+            
+            services.AddAutoMapper(typeof(MappingProfile));
+
+            // repos
             services.AddScoped<IGenericRepository<User>, GenericRepository<User>>();
             services.AddScoped<IGenericRepository<Course>, GenericRepository<Course>>();
             services.AddScoped<IGenericRepository<Quiz>, GenericRepository<Quiz>>();
@@ -42,9 +46,9 @@ namespace StarBucks.Api.Extensions
             services.AddScoped<IQuestionService, QuestionService>();
             services.AddScoped<IAnswerService, AnswerService>();
             services.AddScoped<IQuizResultService, QuizResultService>();
-            
+
         }
-            
+
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("Jwt");

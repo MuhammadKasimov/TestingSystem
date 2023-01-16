@@ -23,7 +23,7 @@ namespace TestingSystem.Service.Interfaces.Users
 
         ValueTask<IEnumerable<UserForViewDTO>> GetAllByDegreeAndFullNameAsync(PaginationParams paginationParams, string degree, string fullName);
 
-        ValueTask < UserForViewDTO> GetAsync(Expression<Func<User, bool>> expression);
+        ValueTask<UserForViewDTO> GetAsync(Expression<Func<User, bool>> expression);
 
         ValueTask<bool> ChangeRoleAsync(int id, UserRole userRole);
 

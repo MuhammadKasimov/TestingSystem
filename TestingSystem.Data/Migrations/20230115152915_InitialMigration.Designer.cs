@@ -12,7 +12,7 @@ using TestingSystem.Data.Contexts;
 namespace TestingSystem.Data.Migrations
 {
     [DbContext(typeof(TestingSystemDbContext))]
-    [Migration("20230114081146_Initial-Migration")]
+    [Migration("20230115152915_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -173,7 +173,7 @@ namespace TestingSystem.Data.Migrations
                     b.ToTable("Quizzes");
                 });
 
-            modelBuilder.Entity("TestingSystem.Domain.Entities.Quizes.QuizResults", b =>
+            modelBuilder.Entity("TestingSystem.Domain.Entities.Quizes.QuizResult", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -247,9 +247,6 @@ namespace TestingSystem.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IpAddress")
-                        .IsUnique();
-
                     b.HasIndex("Username")
                         .IsUnique();
 
@@ -292,7 +289,7 @@ namespace TestingSystem.Data.Migrations
             modelBuilder.Entity("TestingSystem.Domain.Entities.Quizes.Quiz", b =>
                 {
                     b.HasOne("TestingSystem.Domain.Entities.Courses.Course", "Course")
-                        .WithMany()
+                        .WithMany("Quizes")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -300,7 +297,7 @@ namespace TestingSystem.Data.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("TestingSystem.Domain.Entities.Quizes.QuizResults", b =>
+            modelBuilder.Entity("TestingSystem.Domain.Entities.Quizes.QuizResult", b =>
                 {
                     b.HasOne("TestingSystem.Domain.Entities.Quizes.Quiz", "Quiz")
                         .WithMany()
@@ -317,6 +314,11 @@ namespace TestingSystem.Data.Migrations
                     b.Navigation("Quiz");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TestingSystem.Domain.Entities.Courses.Course", b =>
+                {
+                    b.Navigation("Quizes");
                 });
 
             modelBuilder.Entity("TestingSystem.Domain.Entities.Quizes.Question", b =>
