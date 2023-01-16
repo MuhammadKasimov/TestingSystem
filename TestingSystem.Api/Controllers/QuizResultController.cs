@@ -18,14 +18,25 @@ namespace TestingSystem.Api.Controllers
             this.quizResultService = quizResultService;
         }
 
+
         [HttpPost, Authorize(Roles = CustomRoles.USER_ROLE)]
         public async ValueTask<IActionResult> CreateAsync(QuizResultForCreationDTO courseForCreationDTO)
             => Ok(await quizResultService.CreateAsync(courseForCreationDTO));
 
+        /// <summary>
+        /// Get a quiz result {Everyone}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}"), Authorize(Roles = CustomRoles.ALL_ROLES)]
         public async ValueTask<IActionResult> GetAsync([FromRoute] int id)
             => Ok(await quizResultService.GetAsync(u => u.Id == id));
 
+        /// <summary>
+        /// Get all quiz results {Everyone}
+        /// </summary>
+        /// <param name="params"></param>
+        /// <returns></returns>
         [HttpGet, Authorize(Roles = CustomRoles.ALL_ROLES)]
         public async ValueTask<IActionResult> GetAll([FromQuery] PaginationParams @params)
            => Ok(await quizResultService.GetAllAsync(@params));

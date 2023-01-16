@@ -20,28 +20,59 @@ namespace TestingSystem.Api.Controllers
             this.userService = userService;
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Create new user {Admin}
+        /// </summary>
+        /// <param name="userForCreationDTO"></param>
+        /// <returns></returns>
+        [HttpPost, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> CreateAsync(UserForCreationDTO userForCreationDTO)
             => Ok(await userService.CreateAsync(userForCreationDTO));
 
+        /// <summary>
+        /// Update new user {Admin}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userForUpdateDTO"></param>
+        /// <returns></returns>
         [HttpPut("{id}"), Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> UpdateAsync([FromRoute] int id, UserForUpdateDTO userForUpdateDTO)
             => Ok(await userService.UpdateAsync(id, userForUpdateDTO));
-
+        
+        /// <summary>
+        /// Change user role {Admin}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userRole"></param>
+        /// <returns></returns>
         [HttpPatch("{id}"), Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> ChangeRoleAsync([FromRoute] int id, UserRole userRole)
            => Ok(await userService.ChangeRoleAsync(id, userRole));
-
+        
+        /// <summary>
+        /// Change user password {Everyone}
+        /// </summary>
+        /// <param name="userForChangePasswordDTO"></param>
+        /// <returns></returns>
         [HttpPatch("Password"), Authorize(Roles = CustomRoles.USER_ROLE)]
         public async ValueTask<IActionResult> ChangePasswordAsync(UserForChangePasswordDTO userForChangePasswordDTO)
             => Ok(await userService.ChangePasswordAsync(userForChangePasswordDTO));
 
+        /// <summary>
+        /// Get all users {Admin}
+        /// </summary>
+        /// <param name="params"></param>
+        /// <returns></returns>
         [HttpGet, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> GetAll([FromQuery] PaginationParams @params)
            => Ok(await userService.GetAllAsync(@params));
-
-
-        [HttpGet("{id}/Admin"), Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+       
+        /// <summary>
+        /// Get all users {Admin}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}"), Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> GetAsync([FromRoute] int id)
            => Ok(await userService.GetAsync(u => u.Id == id));
 
