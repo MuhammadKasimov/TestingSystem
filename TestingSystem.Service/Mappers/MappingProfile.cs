@@ -43,6 +43,10 @@ namespace TestingSystem.Service.Mappers
             // attachment
             CreateMap<Attachment, AttachmentForCreationDTO>().ReverseMap();
             CreateMap<Attachment, AttachmentForViewDTO>().ReverseMap();
+
+            // solved questions
+            CreateMap<SolvedQuestion, SolvedQuestionForCreationDTO>().ReverseMap();
+            CreateMap<SolvedQuestion, SolvedQuestionForViewDTO>().ReverseMap();
         }
 
     }

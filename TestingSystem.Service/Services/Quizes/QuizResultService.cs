@@ -24,14 +24,18 @@ namespace TestingSystem.Service.Services.Quizes
         private readonly IGenericRepository<Quiz> quizRepository;
         private readonly IGenericRepository<QuizResult> quizResultRepository;
         private readonly IGenericRepository<User> userRepository;
+        private readonly IGenericRepository<Answer> answerRepository;
+        private readonly IGenericRepository<Question> questionRepository;
         private readonly IMapper mapper;
 
-        public QuizResultService(IGenericRepository<Quiz> quizRepository, IGenericRepository<QuizResult> quizResultRepository, IGenericRepository<User> userRepository, IMapper mapper)
+        public QuizResultService(IGenericRepository<Quiz> quizRepository, IGenericRepository<QuizResult> quizResultRepository, IGenericRepository<User> userRepository, IMapper mapper, IGenericRepository<Answer> answerRepository, IGenericRepository<Question> questionRepository)
         {
             this.quizRepository = quizRepository;
             this.quizResultRepository = quizResultRepository;
             this.userRepository = userRepository;
             this.mapper = mapper;
+            this.answerRepository = answerRepository;
+            this.questionRepository = questionRepository;
         }
 
         public async ValueTask<QuizResultForViewDTO> CreateAsync(QuizResultForCreationDTO quizResultForCreationDTO)
@@ -46,6 +50,22 @@ namespace TestingSystem.Service.Services.Quizes
                 throw new TestingSystemException(404, "User not found");
 
             var quizResult = mapper.Map<QuizResult>(quizResultForCreationDTO);
+
+            foreach (var i in quizResultForCreationDTO.SolvedQuestions)
+            {
+                var question = await questionRepository.GetAsync(q => q.Id == i.QuestionId);
+                var answer = await answerRepository.GetAsync(a => a.Id == i.AnswerId);
+
+                if (question.QuizId != quiz.Id)
+                    throw new TestingSystemException(404, "quiz does not have such question");
+
+                if (answer.QuestionId != question.Id)
+                    throw new TestingSystemException(404,"question does not have such answer");
+
+                if (answer.IsCorrect)
+                    quizResult.CorrectAnswers++;
+            }
+
             quizResult.UserId = user.Id;
             quizResult = await quizResultRepository.CreateAsync(quizResult);
             await quizResultRepository.SaveChangesAsync();
@@ -57,7 +77,21 @@ namespace TestingSystem.Service.Services.Quizes
             var quizResults = mapper.Map<List<QuizResultForViewDTO>>( await quizResultRepository.
                 GetAll(qr => qr.QuizId == quizId, isTracking: false, includes: new string[] { "User", "Quiz" }).ToListAsync());
 
-            string fileName = $"{Guid.NewGuid():N}.xlsx";
+            var quizResultsForExcel = new List<QuizResultForViewInExcelDTO>();
+
+
+            foreach (var i in quizResults)
+            {
+                quizResultsForExcel.Add(new QuizResultForViewInExcelDTO()
+                { 
+                    FirstName = i.User.FirstName,
+                    LastName = i.User.LastName,
+                    CorrectAnswers = i.CorrectAnswers
+                });
+            }
+
+
+            string fileName = $"{Guid.NewGuid():N}_{quizResults.FirstOrDefault().Quiz.Title}.xlsx";
             string rootPath = EnvironmentHelper.ExcelRootPath;
 
             string filePath = Path.Combine(EnvironmentHelper.ExcelRootPath, fileName);
@@ -65,18 +99,18 @@ namespace TestingSystem.Service.Services.Quizes
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var package = new ExcelPackage())
             {
-                var workSheet = package.Workbook.Worksheets.Add("Quiz results");
+                var workSheet = package.Workbook.Worksheets.Add(quizResults.FirstOrDefault().Quiz.Title);
 
-                for (int i = 0; i < typeof(QuizResultForViewDTO).GetProperties().Length; i++)
+                for (int i = 0; i < typeof(QuizResultForViewInExcelDTO).GetProperties().Length; i++)
                 {
-                    workSheet.Cells[1, i + 1].Value = typeof(QuizResultForViewDTO).GetProperties()[i].Name;
+                    workSheet.Cells[1, i + 1].Value = typeof(QuizResultForViewInExcelDTO).GetProperties()[i].Name;
                 }
 
-                for (int i = 0; i < quizResults.Count(); i++)
+                for (int i = 0; i < quizResultsForExcel.Count(); i++)
                 {
-                    for (int j = 0; j < typeof(QuizResultForViewDTO).GetProperties().Length; j++)
+                    for (int j = 0; j < typeof(QuizResultForViewInExcelDTO).GetProperties().Length; j++)
                     {
-                        workSheet.Cells[i + 2, j + 1].Value = typeof(QuizResultForViewDTO).GetProperties()[j].GetValue(quizResults[i]);
+                        workSheet.Cells[i + 2, j + 1].Value = typeof(QuizResultForViewInExcelDTO).GetProperties()[j].GetValue(quizResultsForExcel[i]);
                     }
                 }
 
