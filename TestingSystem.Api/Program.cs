@@ -15,6 +15,7 @@ using TestingSystem.Api.Middlewares;
 using TestingSystem.Data.Contexts;
 using TestingSystem.Domain.Enums;
 using TestingSystem.Service.Helpers;
+using TestingSystem.Service.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,8 @@ builder.Services.AddAuthorization(options =>
         Enum.GetName(UserRole.Teacher)));
 });
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -72,6 +75,7 @@ builder.Services.AddControllers(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -85,7 +89,7 @@ if (app.Services.GetService<IHttpContextAccessor>() != null)
 
 app.UseHttpsRedirection();
 
-//app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseAuthentication();
 

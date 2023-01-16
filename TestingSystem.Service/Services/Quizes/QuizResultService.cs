@@ -1,7 +1,10 @@
-﻿using Mapster;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TestingSystem.Data.IRepositories;
@@ -21,12 +24,14 @@ namespace TestingSystem.Service.Services.Quizes
         private readonly IGenericRepository<Quiz> quizRepository;
         private readonly IGenericRepository<QuizResult> quizResultRepository;
         private readonly IGenericRepository<User> userRepository;
+        private readonly IMapper mapper;
 
-        public QuizResultService(IGenericRepository<Quiz> quizRepository, IGenericRepository<QuizResult> quizResultRepository, IGenericRepository<User> userRepository)
+        public QuizResultService(IGenericRepository<Quiz> quizRepository, IGenericRepository<QuizResult> quizResultRepository, IGenericRepository<User> userRepository, IMapper mapper)
         {
             this.quizRepository = quizRepository;
             this.quizResultRepository = quizResultRepository;
             this.userRepository = userRepository;
+            this.mapper = mapper;
         }
 
         public async ValueTask<QuizResultForViewDTO> CreateAsync(QuizResultForCreationDTO quizResultForCreationDTO)
@@ -38,26 +43,65 @@ namespace TestingSystem.Service.Services.Quizes
 
             var user = await userRepository.GetAsync(u => u.Id == HttpContextHelper.UserId);
             if (user is null)
-                throw new TestingSystemException(404,"User not found");
+                throw new TestingSystemException(404, "User not found");
 
-            var QuizResult = await quizResultRepository.CreateAsync(quizResultForCreationDTO.Adapt<QuizResult>());
+            var quizResult = mapper.Map<QuizResult>(quizResultForCreationDTO);
+            quizResult.UserId = user.Id;
+            quizResult = await quizResultRepository.CreateAsync(quizResult);
             await quizResultRepository.SaveChangesAsync();
-            return QuizResult.Adapt<QuizResultForViewDTO>();
+            return mapper.Map<QuizResultForViewDTO>(quizResult);
+        }
+
+        public async ValueTask<string> GetAllInExcel(int quizId)
+        {
+            var quizResults = mapper.Map<List<QuizResultForViewDTO>>( await quizResultRepository.
+                GetAll(qr => qr.QuizId == quizId, isTracking: false, includes: new string[] { "User", "Quiz" }).ToListAsync());
+
+            string fileName = $"{Guid.NewGuid():N}.xlsx";
+            string rootPath = EnvironmentHelper.ExcelRootPath;
+
+            string filePath = Path.Combine(EnvironmentHelper.ExcelRootPath, fileName);
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (var package = new ExcelPackage())
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Quiz results");
+
+                for (int i = 0; i < typeof(QuizResultForViewDTO).GetProperties().Length; i++)
+                {
+                    workSheet.Cells[1, i + 1].Value = typeof(QuizResultForViewDTO).GetProperties()[i].Name;
+                }
+
+                for (int i = 0; i < quizResults.Count(); i++)
+                {
+                    for (int j = 0; j < typeof(QuizResultForViewDTO).GetProperties().Length; j++)
+                    {
+                        workSheet.Cells[i + 2, j + 1].Value = typeof(QuizResultForViewDTO).GetProperties()[j].GetValue(quizResults[i]);
+                    }
+                }
+
+                if (!Directory.Exists(EnvironmentHelper.ExcelRootPath))
+                    Directory.CreateDirectory(EnvironmentHelper.ExcelRootPath);
+
+                File.WriteAllBytes(filePath, package.GetAsByteArray());
+            }
+            return Path.Combine(EnvironmentHelper.ExcelPath, fileName);
+
         }
 
         public async ValueTask<IEnumerable<QuizResultForViewDTO>> GetAllAsync(PaginationParams @params, Expression<Func<QuizResult, bool>> expression = null)
         {
-            var QuizResults = quizResultRepository.GetAll(expression: expression, isTracking: false, includes: new string[] { "User", "Quiz" });
-            return (await QuizResults.ToPagedList(@params).ToListAsync()).Adapt<List<QuizResultForViewDTO>>();
+            var quizResults = quizResultRepository.GetAll(expression: expression, isTracking: false, includes: new string[] { "User", "Quiz" });
+            return mapper.Map<List<QuizResultForViewDTO>>(await quizResults.ToPagedList(@params).ToListAsync());
         }
 
         public async ValueTask<QuizResultForViewDTO> GetAsync(Expression<Func<QuizResult, bool>> expression)
         {
-            var QuizResult = await quizResultRepository.GetAsync(expression, new string[] { "User", "Quiz" });
-            if (QuizResult is null)
+            var quizResult = await quizResultRepository.GetAsync(expression, new string[] { "User", "Quiz" });
+            if (quizResult is null)
                 throw new TestingSystemException(404, "QuizResult Not Found");
 
-            return QuizResult.Adapt<QuizResultForViewDTO>();
+            return mapper.Map<QuizResultForViewDTO>(quizResult);
         }
     }
 }

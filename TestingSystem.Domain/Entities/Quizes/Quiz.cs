@@ -9,7 +9,6 @@ namespace TestingSystem.Domain.Entities.Quizes
     {
         public int NumberOfQuestions { get; set; }
         public int CourseId { get; set; }
-        public Course Course { get; set; }
 
         [MaxLength(200)]
         public string Title { get; set; }

@@ -54,7 +54,7 @@ namespace TestingSystem.Data.Repositories
         }
 
         public async ValueTask<T> GetAsync(Expression<Func<T, bool>> expression, string[] includes = null) =>
-            await GetAll(expression, includes).FirstOrDefaultAsync();
+            await GetAll(expression, includes, false).FirstOrDefaultAsync();
 
         public T Update(T entity) =>
             dbSet.Update(entity).Entity;

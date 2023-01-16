@@ -1,11 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestingSystem.Service.Attributes
 {
@@ -16,7 +10,7 @@ namespace TestingSystem.Service.Attributes
             if (value is string degree &&
                 (degree.Length == 1 || degree.Length == 2) &&
                 degree.Any(c => char.IsDigit(c)) &&
-                int.Parse(degree) >= 1 && 
+                int.Parse(degree) >= 1 &&
                 int.Parse(degree) <= 11)
             {
                 return ValidationResult.Success;

@@ -8,6 +8,5 @@ namespace TestingSystem.Domain.Entities.Attachments
         public string Path { get; set; }
 
         public int QuestionId { get; set; }
-        public Question Questions { get; set; }
     }
 }

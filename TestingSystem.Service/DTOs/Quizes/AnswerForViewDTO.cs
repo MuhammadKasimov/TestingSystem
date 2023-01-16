@@ -10,6 +10,6 @@ namespace TestingSystem.Service.DTOs.Quizes
         [MaxLength(1)]
         public string Option { get; set; }
         public bool IsCorrect { get; set; }
-        public QuestionForViewDTO Question { get; set; }
+        public int QuestionId { get; set; }
     }
 }

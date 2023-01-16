@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using TestingSystem.Domain.Configurations;
 using TestingSystem.Domain.Entities.Quizes;
@@ -10,7 +8,7 @@ using TestingSystem.Service.DTOs.Quizes;
 
 namespace TestingSystem.Service.Interfaces.Quizes
 {
-    public interface IQuizService 
+    public interface IQuizService
     {
         ValueTask<QuizForViewDTO> CreateAsync(QuizForCreationDTO quizForCreationDTO);
 

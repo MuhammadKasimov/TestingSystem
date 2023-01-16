@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TestingSystem.Api.Helpers;
 using TestingSystem.Domain.Configurations;
 using TestingSystem.Service.DTOs.Courses;
-using TestingSystem.Service.Interfaces;
 using TestingSystem.Service.Interfaces.Courses;
 
 namespace TestingSystem.Api.Controllers
@@ -37,7 +35,7 @@ namespace TestingSystem.Api.Controllers
         /// <param name="id"></param>
         /// <param name="courseForCreationDTO"></param>
         /// <returns></returns>
-        [HttpPut, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+        [HttpPut("{id}"), Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> UpdateAsync(int id, CourseForCreationDTO courseForCreationDTO)
            => Ok(await courseService.UpdateAsync(id, courseForCreationDTO));
 
@@ -46,7 +44,7 @@ namespace TestingSystem.Api.Controllers
         /// </summary>
         /// <param name="params"></param>
         /// <returns></returns>
-        [HttpGet, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+        [HttpGet, Authorize(Roles = CustomRoles.ALL_ROLES)]
         public async ValueTask<IActionResult> GetAll([FromQuery] PaginationParams @params)
            => Ok(await courseService.GetAllAsync(@params));
 
@@ -55,7 +53,7 @@ namespace TestingSystem.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}/Admin"), Authorize(Roles = CustomRoles.ALL_ROLES)]
+        [HttpGet("{id}"), Authorize(Roles = CustomRoles.ALL_ROLES)]
         public async ValueTask<IActionResult> GetAsync([FromRoute] int id)
            => Ok(await courseService.GetAsync(u => u.Id == id));
 
@@ -64,7 +62,7 @@ namespace TestingSystem.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+        [HttpDelete("{id}"), Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
             => Ok(await courseService.DeleteAsync(id));
     }

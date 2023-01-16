@@ -23,13 +23,13 @@ namespace TestingSystem.Api.Controllers
         [HttpPost]
         public async ValueTask<IActionResult> UploadAsync(IFormFile formFile)
         {
-            return Ok( await attachmentService.UploadAsync(formFile.ToAttachmentOrDefault()));
+            return Ok(await attachmentService.UploadAsync(formFile.ToAttachmentOrDefault()));
         }
 
         [HttpPut("{id}")]
-        public async ValueTask<IActionResult> UpdateAsync([FromRoute] int id,IFormFile formFile)
+        public async ValueTask<IActionResult> UpdateAsync([FromRoute] int id, IFormFile formFile)
         {
-            return Ok(await attachmentService.UpdateAsync(id,formFile.ToAttachmentOrDefault().Stream));
+            return Ok(await attachmentService.UpdateAsync(id, formFile.ToAttachmentOrDefault().Stream));
         }
     }
 }

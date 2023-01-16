@@ -1,6 +1,5 @@
-﻿using Mapster;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -19,11 +18,13 @@ namespace TestingSystem.Service.Services
 {
     public class UserService : IUserService
     {
-        public IGenericRepository<User> userRepository;
+        private readonly IGenericRepository<User> userRepository;
+        private readonly IMapper mapper;
 
-        public UserService(IGenericRepository<User> userRepository)
+        public UserService(IGenericRepository<User> userRepository, IMapper mapper)
         {
             this.userRepository = userRepository;
+            this.mapper = mapper;
         }
 
         public async ValueTask<UserForViewDTO> CreateAsync(UserForCreationDTO userForCreationDTO)
@@ -35,9 +36,9 @@ namespace TestingSystem.Service.Services
 
             userForCreationDTO.Password = userForCreationDTO.Password.Encrypt();
 
-            var user = await userRepository.CreateAsync(userForCreationDTO.Adapt<User>());
+            var user = await userRepository.CreateAsync(mapper.Map<User>(userForCreationDTO));
             await userRepository.SaveChangesAsync();
-            return user.Adapt<UserForViewDTO>();
+            return mapper.Map<UserForViewDTO>(user);
         }
 
         public async ValueTask<bool> DeleteAsync(int id)
@@ -52,15 +53,15 @@ namespace TestingSystem.Service.Services
         {
             var users = userRepository.GetAll(expression: expression, isTracking: false);
 
-            return (await users.ToPagedList(@params).ToListAsync()).Adapt<List<UserForViewDTO>>();
+            return mapper.Map<List<UserForViewDTO>>(await users.ToPagedList(@params).ToListAsync());
         }
 
-        public async ValueTask<IEnumerable<UserForViewDTO>> GetAllByDegreeAndFullNameAsync(PaginationParams paginationParams, string degree, string fullName) => 
+        public async ValueTask<IEnumerable<UserForViewDTO>> GetAllByDegreeAndFullNameAsync(PaginationParams paginationParams, string degree, string fullName) =>
             await GetAllAsync(paginationParams, u => (u.Degree == degree ||
                           string.IsNullOrEmpty(degree)) &&
                           (u.FirstName.Contains(fullName) ||
                           u.LastName.Contains(fullName) ||
-                          "{u.FirstName} {u.LastName}".Contains(u.FirstName) 
+                          "{u.FirstName} {u.LastName}".Contains(u.FirstName)
                           || string.IsNullOrEmpty(fullName)));
 
         public async ValueTask<UserForViewDTO> GetAsync(Expression<Func<User, bool>> expression)
@@ -70,12 +71,12 @@ namespace TestingSystem.Service.Services
             if (user is null)
                 throw new TestingSystemException(404, "User not found");
 
-            return user.Adapt<UserForViewDTO>();
+            return mapper.Map<UserForViewDTO>(user);
         }
 
         public async ValueTask<UserForViewDTO> UpdateAsync(int id, UserForUpdateDTO userForUpdateDTO)
         {
-            var existUser = await GetAsync(
+            var existUser = await userRepository.GetAsync(
                 u => u.Id == id);
 
             if (existUser == null)
@@ -87,13 +88,12 @@ namespace TestingSystem.Service.Services
             if (alreadyExistUser != null)
                 throw new TestingSystemException(400, "User with such username already exists");
 
-            var user = existUser.Adapt<User>();
 
-            user.UpdatedAt = DateTime.UtcNow;
-            user = userRepository.Update(user = userForUpdateDTO.Adapt(user));
+            existUser.UpdatedAt = DateTime.UtcNow;
+            existUser = userRepository.Update(mapper.Map(userForUpdateDTO, existUser));
             await userRepository.SaveChangesAsync();
 
-            return user.Adapt<UserForViewDTO>();
+            return mapper.Map<UserForViewDTO>(existUser);
         }
 
         public async ValueTask<bool> ChangeRoleAsync(int id, UserRole userRole)
