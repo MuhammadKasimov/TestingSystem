@@ -1,4 +1,5 @@
-﻿using TestingSystem.Domain.Commons;
+﻿using System.Collections.Generic;
+using TestingSystem.Domain.Commons;
 using TestingSystem.Domain.Entities.Users;
 
 namespace TestingSystem.Domain.Entities.Quizes
@@ -10,5 +11,6 @@ namespace TestingSystem.Domain.Entities.Quizes
         public Quiz Quiz { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
+        public ICollection<SolvedQuestion> SolvedQuestions { get; set; }
     }
 }
