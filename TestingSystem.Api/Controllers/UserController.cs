@@ -25,7 +25,7 @@ namespace TestingSystem.Api.Controllers
         /// </summary>
         /// <param name="userForCreationDTO"></param>
         /// <returns></returns>
-        [HttpPost, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+        [HttpPost]
         public async ValueTask<IActionResult> CreateAsync(UserForCreationDTO userForCreationDTO)
             => Ok(await userService.CreateAsync(userForCreationDTO));
 

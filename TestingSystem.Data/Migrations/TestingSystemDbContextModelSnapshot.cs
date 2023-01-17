@@ -253,46 +253,38 @@ namespace TestingSystem.Data.Migrations
 
             modelBuilder.Entity("TestingSystem.Domain.Entities.Attachments.Attachment", b =>
                 {
-                    b.HasOne("TestingSystem.Domain.Entities.Quizes.Question", "Questions")
+                    b.HasOne("TestingSystem.Domain.Entities.Quizes.Question", null)
                         .WithMany("Attachments")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Questions");
                 });
 
             modelBuilder.Entity("TestingSystem.Domain.Entities.Quizes.Answer", b =>
                 {
-                    b.HasOne("TestingSystem.Domain.Entities.Quizes.Question", "Question")
+                    b.HasOne("TestingSystem.Domain.Entities.Quizes.Question", null)
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Question");
                 });
 
             modelBuilder.Entity("TestingSystem.Domain.Entities.Quizes.Question", b =>
                 {
-                    b.HasOne("TestingSystem.Domain.Entities.Quizes.Quiz", "Quiz")
+                    b.HasOne("TestingSystem.Domain.Entities.Quizes.Quiz", null)
                         .WithMany("Questions")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Quiz");
                 });
 
             modelBuilder.Entity("TestingSystem.Domain.Entities.Quizes.Quiz", b =>
                 {
-                    b.HasOne("TestingSystem.Domain.Entities.Courses.Course", "Course")
+                    b.HasOne("TestingSystem.Domain.Entities.Courses.Course", null)
                         .WithMany("Quizes")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("TestingSystem.Domain.Entities.Quizes.QuizResult", b =>

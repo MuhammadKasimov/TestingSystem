@@ -5,12 +5,14 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StarBucks.Service.Services;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using TestingSystem.Data.IRepositories;
 using TestingSystem.Data.Repositories;
 using TestingSystem.Domain.Entities.Courses;
 using TestingSystem.Domain.Entities.Quizes;
 using TestingSystem.Domain.Entities.Users;
+using TestingSystem.Domain.Entities.Attachments;
 using TestingSystem.Service.Interfaces.Courses;
 using TestingSystem.Service.Interfaces.Questiones;
 using TestingSystem.Service.Interfaces.Quizes;
@@ -19,6 +21,7 @@ using TestingSystem.Service.Mappers;
 using TestingSystem.Service.Services;
 using TestingSystem.Service.Services.CourseServices;
 using TestingSystem.Service.Services.Quizes;
+using Attachment = TestingSystem.Domain.Entities.Attachments.Attachment;
 
 namespace StarBucks.Api.Extensions
 {
@@ -37,6 +40,7 @@ namespace StarBucks.Api.Extensions
             services.AddScoped<IGenericRepository<Question>, GenericRepository<Question>>();
             services.AddScoped<IGenericRepository<Answer>, GenericRepository<Answer>>();
             services.AddScoped<IGenericRepository<QuizResult>, GenericRepository<QuizResult>>();
+            services.AddScoped<IGenericRepository<Attachment>, GenericRepository<Attachment>>();
             // services
 
             services.AddScoped<IAuthService, AuthService>();
@@ -46,6 +50,7 @@ namespace StarBucks.Api.Extensions
             services.AddScoped<IQuestionService, QuestionService>();
             services.AddScoped<IAnswerService, AnswerService>();
             services.AddScoped<IQuizResultService, QuizResultService>();
+            services.AddScoped<IAttachmentService, AttachmentService>();
 
         }
 
