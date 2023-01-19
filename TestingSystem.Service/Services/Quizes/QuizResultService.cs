@@ -161,7 +161,7 @@ namespace TestingSystem.Service.Services.Quizes
 
         public async ValueTask<IEnumerable<QuizResultForViewDTO>> GetAllAsync(PaginationParams @params, Expression<Func<QuizResult, bool>> expression = null)
         {
-            var quizResults = quizResultRepository.GetAll(expression: expression, isTracking: false, includes: new string[] { "User", "Quiz", "SolvedQuestions", "Quiz.Questions" });
+            var quizResults = quizResultRepository.GetAll(expression: expression, isTracking: false, includes: new string[] { "User", "Quiz", "SolvedQuestions", "Quiz.Questions", "Quiz.Questions.Answers" });
             return mapper.Map<List<QuizResultForViewDTO>>(await quizResults.ToPagedList(@params).ToListAsync());
         }
 
