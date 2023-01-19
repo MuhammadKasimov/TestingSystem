@@ -8,5 +8,8 @@ namespace TestingSystem.Service.DTOs.Quizes
         public int CourseId { get; set; }
         [Required]
         public string Title { get; set; }
+        [Required]
+        public int TimeToSolveInMinutes { get; set; }
+
     }
 }
