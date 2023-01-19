@@ -18,6 +18,9 @@ namespace TestingSystem.Api.Controllers
             this.quizResultService = quizResultService;
         }
 
+        [HttpPost("start"), Authorize(Roles = CustomRoles.USER_ROLE)]
+        public async ValueTask<IActionResult> StartAsync(int quizId)
+            => Ok(await quizResultService.StartSolvingQuizAsync(quizId));
 
         [HttpPost, Authorize(Roles = CustomRoles.USER_ROLE)]
         public async ValueTask<IActionResult> CreateAsync(QuizResultForCreationDTO courseForCreationDTO)

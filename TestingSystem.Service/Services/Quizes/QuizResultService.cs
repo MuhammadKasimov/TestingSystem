@@ -38,25 +38,62 @@ namespace TestingSystem.Service.Services.Quizes
             this.questionRepository = questionRepository;
         }
 
-        public async ValueTask<QuizResultForViewDTO> CreateAsync(QuizResultForCreationDTO quizResultForCreationDTO)
+        public async ValueTask<QuizResultForViewDTO> StartSolvingQuizAsync(int quizId)
         {
-            var quiz = await quizRepository.GetAsync(q => q.Id == quizResultForCreationDTO.QuizId);
+            var quiz = await quizRepository.GetAsync(q => q.Id == quizId);
 
             if (quiz is null)
                 throw new TestingSystemException(404, "Quiz not found");
-
+           
             var user = await userRepository.GetAsync(u => u.Id == HttpContextHelper.UserId);
             if (user is null)
                 throw new TestingSystemException(404, "User not found");
 
-            var quizResult = mapper.Map<QuizResult>(quizResultForCreationDTO);
+            var quizResult = new QuizResult()
+            {
+                QuizId = quizId,
+                UserId = user.Id,
+            };
 
+            var alreadySolved = await quizResultRepository.GetAsync(
+                                    q => q.UserId == HttpContextHelper.UserId &&
+                                    q.QuizId == quizResult.QuizId);
+
+            if (alreadySolved != null)
+                throw new TestingSystemException(400, "Already solved this test");
+
+            quizResult = await quizResultRepository.CreateAsync(quizResult);
+            await quizResultRepository.SaveChangesAsync();
+            return mapper.Map<QuizResultForViewDTO>(quizRepository);
+
+        }
+        public async ValueTask<QuizResultForViewDTO> CreateAsync(QuizResultForCreationDTO quizResultForCreationDTO)
+        {
+            var quizResult = await quizResultRepository.GetAsync(q => q.Id == quizResultForCreationDTO.StartedQuizResultId);
+
+            if (quizResult is null)
+                throw new TestingSystemException(404,"quizResult not found");
+            quizResult = mapper.Map(quizResultForCreationDTO, quizResult);
+
+            var quiz = await quizRepository.GetAsync(q => q.Id == quizResult.Id);
+
+            if (quiz.CreatedAt + TimeSpan.FromMinutes(quiz.TimeToSolveInMinutes) <= DateTime.UtcNow)
+            {
+                throw new TestingSystemException(403,"No access to solve this test");
+            }
             foreach (var i in quizResultForCreationDTO.SolvedQuestions)
             {
                 var question = await questionRepository.GetAsync(q => q.Id == i.QuestionId);
                 var answer = await answerRepository.GetAsync(a => a.Id == i.AnswerId);
 
-                if (question.QuizId != quiz.Id)
+                if (answer is null)
+                    throw new TestingSystemException(404,"answer not found");
+
+                if (question is null)
+                    throw new TestingSystemException(404,"quesion not found");
+
+
+                if (question.QuizId != quizResult.QuizId)
                     throw new TestingSystemException(404, "quiz does not have such question");
 
                 if (answer.QuestionId != question.Id)

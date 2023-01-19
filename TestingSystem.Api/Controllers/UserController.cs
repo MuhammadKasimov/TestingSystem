@@ -66,6 +66,18 @@ namespace TestingSystem.Api.Controllers
         [HttpGet, Authorize(Roles = CustomRoles.ADMIN_ROLE)]
         public async ValueTask<IActionResult> GetAll([FromQuery] PaginationParams @params)
            => Ok(await userService.GetAllAsync(@params));
+
+        /// <summary>
+        /// Filtr users by name and degree
+        /// </summary>
+        /// <param name="params"></param>
+        /// <param name="degree"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpGet("filtr"), Authorize(Roles = CustomRoles.ADMIN_ROLE)]
+        public async ValueTask<IActionResult> GetAllByNameAndDegree([FromQuery] PaginationParams @params, string degree, string name) 
+            => Ok(await userService.GetAllByDegreeAndFullNameAsync(@params, degree, name));
+
        
         /// <summary>
         /// Get all users {Admin}

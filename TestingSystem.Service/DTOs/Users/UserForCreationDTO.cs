@@ -16,6 +16,7 @@ namespace TestingSystem.Service.DTOs.Users
 
         [UserPassword, Required]
         public string Password { get; set; }
+        [DegreeAttributes]
         public string Degree { get; set; }
 
     }

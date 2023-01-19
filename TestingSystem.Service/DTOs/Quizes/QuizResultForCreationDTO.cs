@@ -7,8 +7,7 @@ namespace TestingSystem.Service.DTOs.Quizes
 {
     public class QuizResultForCreationDTO
     {
-        public int QuizId { get; set; }
-        public int UserId { get; set; }
+        public int StartedQuizResultId { get; set; }
         public ICollection<SolvedQuestionForCreationDTO> SolvedQuestions { get; set; }
     }
 }
