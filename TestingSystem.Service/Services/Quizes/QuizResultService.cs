@@ -75,8 +75,11 @@ namespace TestingSystem.Service.Services.Quizes
                 throw new TestingSystemException(404,"quizResult not found");
             quizResult = mapper.Map(quizResultForCreationDTO, quizResult);
 
-            var quiz = await quizRepository.GetAsync(q => q.Id == quizResult.Id);
+            var quiz = await quizRepository.GetAsync(q => q.Id == quizResult.QuizId);
 
+            if (quiz is null)
+                throw new TestingSystemException(404, "Quiz not found");
+            
             if (quizResult.CreatedAt + TimeSpan.FromMinutes(quiz.TimeToSolveInMinutes) <= DateTime.UtcNow)
             {
                 throw new TestingSystemException(403,"No access to solve this test");
