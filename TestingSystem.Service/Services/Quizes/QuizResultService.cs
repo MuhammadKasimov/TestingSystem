@@ -103,7 +103,6 @@ namespace TestingSystem.Service.Services.Quizes
                     quizResult.CorrectAnswers++;
             }
 
-            quizResult.UserId = user.Id;
             quizResult = await quizResultRepository.CreateAsync(quizResult);
             await quizResultRepository.SaveChangesAsync();
             return mapper.Map<QuizResultForViewDTO>(quizResult);
