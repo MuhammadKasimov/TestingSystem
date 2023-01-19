@@ -170,7 +170,7 @@ namespace TestingSystem.Service.Services.Quizes
 
         public async ValueTask<QuizResultForViewDTO> GetAsync(Expression<Func<QuizResult, bool>> expression)
         {
-            var quizResult = await quizResultRepository.GetAsync(expression, new string[] { "User", "Quiz" });
+            var quizResult = await quizResultRepository.GetAsync(expression, new string[] { "User", "Quiz", "SolvedQuestions", "Quiz.Questions", "Quiz.Questions.Answers" });
             if (quizResult is null)
                 throw new TestingSystemException(404, "QuizResult Not Found");
 
