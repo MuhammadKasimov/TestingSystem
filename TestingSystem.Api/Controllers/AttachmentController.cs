@@ -20,10 +20,10 @@ namespace TestingSystem.Api.Controllers
             this.attachmentService = attachmentService;
         }
 
-        [HttpPost]
-        public async ValueTask<IActionResult> UploadAsync(IFormFile formFile)
+        [HttpPost("{questionId}")]
+        public async ValueTask<IActionResult> UploadAsync([FromRoute] int questionId,IFormFile formFile)
         {
-            return Ok(await attachmentService.UploadAsync(formFile.ToAttachmentOrDefault()));
+            return Ok(await attachmentService.UploadAsync(questionId,formFile.ToAttachmentOrDefault()));
         }
 
         [HttpPut("{id}")]

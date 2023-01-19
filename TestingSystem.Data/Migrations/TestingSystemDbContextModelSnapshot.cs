@@ -157,6 +157,9 @@ namespace TestingSystem.Data.Migrations
                     b.Property<int>("NumberOfQuestions")
                         .HasColumnType("integer");
 
+                    b.Property<int>("TimeToSolveInMinutes")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Title")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
@@ -261,6 +264,9 @@ namespace TestingSystem.Data.Migrations
 
                     b.Property<string>("IpAddress")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(32)

@@ -60,7 +60,7 @@ namespace TestingSystem.Service.Services.Quizes
         {
             var answer = await answerRepository.GetAsync(expression);
             if (answer is null)
-                throw new TestingSystemException(404, "Answer Not Found");
+                throw new TestingSystemException(404, message: "Answer Not Found");
 
             return mapper.Map<AnswerForViewDTO>(answer);
         }

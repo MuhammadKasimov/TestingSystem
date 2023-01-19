@@ -7,8 +7,8 @@ namespace TestingSystem.Service.Interfaces.Quizes
 {
     public interface IAttachmentService
     {
-        ValueTask<Attachment> UploadAsync(AttachmentForCreationDTO dto);
+        ValueTask<Attachment> UploadAsync( int questionId,AttachmentForCreationDTO dto);
         ValueTask<Attachment> UpdateAsync(int id, Stream stream);
-        ValueTask<Attachment> CreateAsync(string fileName, string filePath);
+        ValueTask<Attachment> CreateAsync(int questionId,string fileName, string filePath);
     }
 }
