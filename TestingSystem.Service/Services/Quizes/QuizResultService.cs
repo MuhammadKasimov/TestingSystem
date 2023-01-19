@@ -106,7 +106,7 @@ namespace TestingSystem.Service.Services.Quizes
                     quizResult.CorrectAnswers++;
             }
 
-            quizResult = await quizResultRepository.CreateAsync(quizResult);
+            quizResult = quizResultRepository.Update(quizResult);
             await quizResultRepository.SaveChangesAsync();
             return mapper.Map<QuizResultForViewDTO>(quizResult);
         }
