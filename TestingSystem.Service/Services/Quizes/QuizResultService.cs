@@ -64,7 +64,7 @@ namespace TestingSystem.Service.Services.Quizes
 
             quizResult = await quizResultRepository.CreateAsync(quizResult);
             await quizResultRepository.SaveChangesAsync();
-            return mapper.Map<QuizResultForViewDTO>(quizRepository);
+            return mapper.Map<QuizResultForViewDTO>(quizResult);
 
         }
         public async ValueTask<QuizResultForViewDTO> CreateAsync(QuizResultForCreationDTO quizResultForCreationDTO)
