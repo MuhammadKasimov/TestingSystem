@@ -77,7 +77,7 @@ namespace TestingSystem.Service.Services.Quizes
 
             var quiz = await quizRepository.GetAsync(q => q.Id == quizResult.Id);
 
-            if (quiz.CreatedAt + TimeSpan.FromMinutes(quiz.TimeToSolveInMinutes) <= DateTime.UtcNow)
+            if (quizResult.CreatedAt + TimeSpan.FromMinutes(quiz.TimeToSolveInMinutes) <= DateTime.UtcNow)
             {
                 throw new TestingSystemException(403,"No access to solve this test");
             }
@@ -161,7 +161,7 @@ namespace TestingSystem.Service.Services.Quizes
 
         public async ValueTask<IEnumerable<QuizResultForViewDTO>> GetAllAsync(PaginationParams @params, Expression<Func<QuizResult, bool>> expression = null)
         {
-            var quizResults = quizResultRepository.GetAll(expression: expression, isTracking: false, includes: new string[] { "User", "Quiz", "SolvedQuestions" });
+            var quizResults = quizResultRepository.GetAll(expression: expression, isTracking: false, includes: new string[] { "User", "Quiz", "SolvedQuestions", "Quiz.Questions" });
             return mapper.Map<List<QuizResultForViewDTO>>(await quizResults.ToPagedList(@params).ToListAsync());
         }
 
