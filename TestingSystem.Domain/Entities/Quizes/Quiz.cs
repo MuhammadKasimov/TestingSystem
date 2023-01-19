@@ -14,5 +14,6 @@ namespace TestingSystem.Domain.Entities.Quizes
         public string Title { get; set; }
 
         public ICollection<Question> Questions { get; set; }
+        public int TimeToSolveInMinutes { get; set; }
     }
 }

@@ -61,8 +61,8 @@ namespace TestingSystem.Service.Services
                           string.IsNullOrEmpty(degree)) &&
                           (u.FirstName.Contains(fullName) ||
                           u.LastName.Contains(fullName) ||
-                          "{u.FirstName} {u.LastName}".Contains(u.FirstName)
-                          || string.IsNullOrEmpty(fullName)));
+                          (u.FirstName + " " + u.LastName).Contains(u.FirstName) ||
+                          string.IsNullOrEmpty(fullName)));
 
         public async ValueTask<UserForViewDTO> GetAsync(Expression<Func<User, bool>> expression)
         {

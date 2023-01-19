@@ -12,7 +12,7 @@ namespace TestingSystem.Service.Interfaces.Quizes
     {
 
         ValueTask<QuizResultForViewDTO> CreateAsync(QuizResultForCreationDTO QuizResultForCreationDTO);
-
+        ValueTask<QuizResultForViewDTO> StartSolvingQuizAsync(int quizId);
         ValueTask<IEnumerable<QuizResultForViewDTO>> GetAllAsync(
             PaginationParams @params,
             Expression<Func<QuizResult, bool>> expression = null);

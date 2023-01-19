@@ -79,6 +79,8 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseSession();
+
 app.UseStaticFiles();
 
 // Set helpers
@@ -97,6 +99,7 @@ app.UseAuthorization();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.UseMiddleware<IdleTimeoutMiddleware>(TimeSpan.FromHours(1));
 app.MapControllers();
 
 app.Run();

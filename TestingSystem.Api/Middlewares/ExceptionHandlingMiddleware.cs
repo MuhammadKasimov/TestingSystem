@@ -38,9 +38,9 @@ namespace TestingSystem.Api.Middlewares
         public async Task HandleException(HttpContext context, int code, string message)
         {
             context.Response.StatusCode = code;
+
             await context.Response.WriteAsJsonAsync(new
             {
-                Code = code,
                 Message = message
             });
         }

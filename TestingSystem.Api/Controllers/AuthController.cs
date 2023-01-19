@@ -1,6 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
+using TestingSystem.Api.Helpers;
+using TestingSystem.Domain.Entities.Users;
 using TestingSystem.Service.DTOs.Users;
+using TestingSystem.Service.Helpers;
 using TestingSystem.Service.Interfaces.Users;
 
 namespace TestingSystem.Api.Controllers
@@ -23,6 +29,11 @@ namespace TestingSystem.Api.Controllers
         [HttpPost("login")]
         public async ValueTask<IActionResult> Login(UserForLoginDTO dto)
         {
+            var userSession = new UserSession { UserId = HttpContextHelper.UserId, SessionId = Guid.NewGuid().ToString(), LastActivity = DateTime.Now };
+            // store the user session in a database or cache
+            //...
+            HttpContext.Session.SetString("UserSession", JsonConvert.SerializeObject(userSession));
+
             var token = await authService.GenerateToken(dto.Login, dto.Password);
             return Ok(new
             {
