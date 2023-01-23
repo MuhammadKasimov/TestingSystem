@@ -64,7 +64,7 @@ namespace TestingSystem.Service.Services.Quizes
 
             quizResult = await quizResultRepository.CreateAsync(quizResult);
             await quizResultRepository.SaveChangesAsync();
-            return mapper.Map<QuizResultForViewDTO>(quizRepository);
+            return mapper.Map<QuizResultForViewDTO>(quizResult);
 
         }
         public async ValueTask<QuizResultForViewDTO> CreateAsync(QuizResultForCreationDTO quizResultForCreationDTO)
@@ -75,9 +75,12 @@ namespace TestingSystem.Service.Services.Quizes
                 throw new TestingSystemException(404,"quizResult not found");
             quizResult = mapper.Map(quizResultForCreationDTO, quizResult);
 
-            var quiz = await quizRepository.GetAsync(q => q.Id == quizResult.Id);
+            var quiz = await quizRepository.GetAsync(q => q.Id == quizResult.QuizId);
 
-            if (quiz.CreatedAt + TimeSpan.FromMinutes(quiz.TimeToSolveInMinutes) <= DateTime.UtcNow)
+            if (quiz is null)
+                throw new TestingSystemException(404, "Quiz not found");
+            
+            if (quizResult.CreatedAt + TimeSpan.FromMinutes(quiz.TimeToSolveInMinutes) <= DateTime.UtcNow)
             {
                 throw new TestingSystemException(403,"No access to solve this test");
             }
@@ -103,8 +106,7 @@ namespace TestingSystem.Service.Services.Quizes
                     quizResult.CorrectAnswers++;
             }
 
-            quizResult.UserId = user.Id;
-            quizResult = await quizResultRepository.CreateAsync(quizResult);
+            quizResult = quizResultRepository.Update(quizResult);
             await quizResultRepository.SaveChangesAsync();
             return mapper.Map<QuizResultForViewDTO>(quizResult);
         }
@@ -162,13 +164,13 @@ namespace TestingSystem.Service.Services.Quizes
 
         public async ValueTask<IEnumerable<QuizResultForViewDTO>> GetAllAsync(PaginationParams @params, Expression<Func<QuizResult, bool>> expression = null)
         {
-            var quizResults = quizResultRepository.GetAll(expression: expression, isTracking: false, includes: new string[] { "User", "Quiz" });
+            var quizResults = quizResultRepository.GetAll(expression: expression, isTracking: false, includes: new string[] { "User", "Quiz", "SolvedQuestions", "Quiz.Questions", "Quiz.Questions.Answers" });
             return mapper.Map<List<QuizResultForViewDTO>>(await quizResults.ToPagedList(@params).ToListAsync());
         }
 
         public async ValueTask<QuizResultForViewDTO> GetAsync(Expression<Func<QuizResult, bool>> expression)
         {
-            var quizResult = await quizResultRepository.GetAsync(expression, new string[] { "User", "Quiz" });
+            var quizResult = await quizResultRepository.GetAsync(expression, new string[] { "User", "Quiz", "SolvedQuestions", "Quiz.Questions", "Quiz.Questions.Answers" });
             if (quizResult is null)
                 throw new TestingSystemException(404, "QuizResult Not Found");
 

@@ -51,9 +51,6 @@ namespace StarBucks.Api.Extensions
             services.AddScoped<IAnswerService, AnswerService>();
             services.AddScoped<IQuizResultService, QuizResultService>();
             services.AddScoped<IAttachmentService, AttachmentService>();
-
-            // session
-            services.AddSession();
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)

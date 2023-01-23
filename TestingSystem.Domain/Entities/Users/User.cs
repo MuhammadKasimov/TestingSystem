@@ -22,5 +22,6 @@ namespace TestingSystem.Domain.Entities.Users
         [MaxLength(2)]
         public string Degree { get; set; }
         public UserRole Role { get; set; }
+        public bool IsActive { get; set; } = false;
     }
 }

@@ -10,7 +10,7 @@ namespace TestingSystem.Service.DTOs.Quizes
         public int CourseId { get; set; }
         public int NumberOfQuestions { get; set; }
         public string Title { get; set; }
-
+        public int TimeToSolveInMinutes { get; set; }
         public ICollection<Question> Questions { get; set; }
     }
 }

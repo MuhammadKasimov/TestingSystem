@@ -41,6 +41,19 @@ namespace TestingSystem.Service.Services
             return mapper.Map<UserForViewDTO>(user);
         }
 
+        //public async ValueTask<bool> Logout()
+        //{
+        //    var user = await userRepository.GetAsync(u => u.Id == HttpContextHelper.UserId);
+        //    if (user is null) 
+        //        throw new TestingSystemException(404, "User not found");
+        //    user.IsActive = false;
+
+        //    userRepository.Update(user);
+
+        //    await userRepository.SaveChangesAsync();
+        //}
+
+
         public async ValueTask<bool> DeleteAsync(int id)
         {
             var isDeleted = await userRepository.DeleteAsync(u => u.Id == id);

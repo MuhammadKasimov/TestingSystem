@@ -33,20 +33,22 @@ namespace StarBucks.Service.Services
             if (user is null)
                 throw new TestingSystemException(400, "Login or Password is incorrect");
 
+            //if (!user.IsActive)
+            //{
+            //    user.IsActive = true;
+            //    userRepository.Update(user);
+            //    await userRepository.SaveChangesAsync();
+            //}
+            //else
+            //{
+            //    throw new TestingSystemException(403,"Another device is alredy logined");
+            //}
+
+
             //var correct = await userRepository.GetAsync(
             //    u => (u.IpAddress == HttpContextHelper.DeviceId && u.Username == username) ||
             //    (string.IsNullOrEmpty(u.IpAddress) && u.Username == username) ||
             //    u.Role == UserRole.Admin);
-
-            //if (correct == null)
-            //    throw new TestingSystemException(400, "Another device is already logined");
-
-            //if (string.IsNullOrEmpty(correct.IpAddress))
-            //{
-            //    correct.IpAddress = HttpContextHelper.DeviceId;
-            //    userRepository.Update(correct);
-            //    await userRepository.SaveChangesAsync();
-            //}
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
